@@ -5,7 +5,7 @@ namespace JWT_AuthApplication.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
-	[Authorize]
+	[Authorize(Roles ="Admin")]
 	public class WeatherForecastController : ControllerBase
 	{
 		private static readonly string[] Summaries = new[]
@@ -23,6 +23,11 @@ namespace JWT_AuthApplication.Controllers
 		[HttpGet(Name = "GetWeatherForecast")]
 		public IEnumerable<WeatherForecast> Get()
 		{
+			_logger.LogInformation(HttpContext.User.Identity.Name +" retrieved weather forecast at "+ DateTime.Now.ToString());
+
+
+
+
 			return Enumerable.Range(1, 5).Select(index => new WeatherForecast
 			{
 				Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),

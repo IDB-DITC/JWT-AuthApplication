@@ -3,6 +3,7 @@ using JWT_AuthApplication.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Text;
 
 namespace JWT_AuthApplication
@@ -14,9 +15,24 @@ namespace JWT_AuthApplication
 			var builder = WebApplication.CreateBuilder(args);
 
 			// Add services to the container.
+			builder.Services.AddCors(options =>
+			{
+				options.AddDefaultPolicy(
+					policy =>
+					{
+						policy.AllowAnyOrigin();
+						policy.AllowAnyHeader();
+						policy.AllowAnyMethod();
+						//set the allowed origin  
+					});
+			});
 
-
-
+			var logger = new LoggerConfiguration()
+				.ReadFrom.Configuration(builder.Configuration)
+				.Enrich.FromLogContext()
+				.CreateLogger();
+			builder.Logging.ClearProviders();
+			builder.Logging.AddSerilog(logger);
 
 
 
@@ -94,6 +110,12 @@ namespace JWT_AuthApplication
 				app.UseSwagger();
 				app.UseSwaggerUI();
 			}
+
+
+			app.UseCors(opt =>
+			{
+				opt.WithOrigins("https://localhost:7174").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+			});
 
 			app.UseHttpsRedirection();
 

@@ -10,8 +10,9 @@ namespace JWT_AuthApplication.Models
 	{
         public string UserName { get; set;  }
         public string Password { get; set; }
+        public string? Role { get; set; }
 
-        public User()
+		public User()
         {
             
         }
@@ -20,5 +21,6 @@ namespace JWT_AuthApplication.Models
 			this.UserName = u;
 			this.Password = p;
 		}
+		
 	}
 }

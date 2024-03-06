@@ -25,8 +25,8 @@ public class UserService : IUserService
 	List<User> users = new List<User>()
 		{
 
-			new User ("admin", "123456"),
-			new User { UserName ="ditc" , Password="123456"}
+			new User ("admin", "123456"){Role="Admin"},
+			new User { UserName ="ditc" , Password="123456", Role="User"}
 
 		};
 
@@ -62,12 +62,11 @@ public class UserService : IUserService
 				Subject = new ClaimsIdentity(
 						new Claim[]
 						{
-						new Claim(ClaimTypes.Name, loginUser.UserName)
 
 						}),
-				IssuedAt = DateTime.UtcNow,
-				Expires = DateTime.UtcNow.AddSeconds(40),
 				
+				IssuedAt = DateTime.UtcNow,
+
 				SigningCredentials = new SigningCredentials(
 					new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
 
